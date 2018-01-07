@@ -21,7 +21,8 @@ void UPositionReport::BeginPlay()
 	Super::BeginPlay();
 
 	FString ObjectName = GetOwner()->GetName();  // "->" instead of "." because this (GetOwner) is a pointer.
-	UE_LOG(LogTemp, Warning, TEXT("PositionReport reporting for %s!"), *ObjectName); // Prints log to the console (Output log).  This Warning Log is telling what item is reporting in.
+	FString ObjectPos = GetOwner()->GetActorTransform().GetLocation().ToString();
+	UE_LOG(LogTemp, Warning, TEXT("%s is at %s!"), *ObjectName, *ObjectPos); // Prints log to the console (Output log).  This Warning Log is telling what item is reporting in.
 	
 }
 
