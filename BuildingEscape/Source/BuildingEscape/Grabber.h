@@ -26,6 +26,6 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-	float Reach = 100.0f;
+	float Reach = 150.0f;
 	
 };
