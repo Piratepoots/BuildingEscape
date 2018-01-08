@@ -14,3 +14,5 @@ BuildingEscape/Content/StarterContent/HDRI
 #####################
 *.VC.db
 BuildingEscape/.vs/
+*.VC.opendb
+*.sln
