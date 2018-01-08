@@ -1,7 +1,8 @@
 // Copyright Piratepoots Media 2018
 
 #include "OpenDoor.h"
-#include "Gameframework/Actor.h" // as of 4.17, IWYU (include what you use) was introduced so now we need to include header files that we need.
+#include "GameFramework/Actor.h" // as of 4.17, IWYU (include what you use) was introduced so now we need to include header files that we need.
+#include "Engine/World.h"
 
 
 // Sets default values for this component's properties
@@ -20,19 +21,20 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Owner = GetOwner();
 	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 void UOpenDoor::OpenDoor()
 {
-	// Find the owning actor
-	AActor* Owner = GetOwner();
-
-	// create a rotator
-	FRotator NewRotation = FRotator(0.0f, 90.0f, 0.0f);
-
 	// set the door rotation
-	Owner->SetActorRotation(NewRotation);
+	Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
+}
+
+void UOpenDoor::CloseDoor()
+{
+	// set the door rotation
+	Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
 
 
@@ -46,6 +48,14 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (PressurePlate->IsOverlappingActor(ActorThatOpens))
 	{
 		OpenDoor();
+		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+	}
+
+	// Check if it's time to close the door
+	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay)
+	{
+		CloseDoor();
 	}
 }
+
 
